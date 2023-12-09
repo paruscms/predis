@@ -7,11 +7,15 @@ class Cache
     private \Predis\Client $client;
     private bool $cache;
 
-    private function __construct()
+    private function __construct($host = '127.0.0.1', $port = 6379)
     {
         if (extension_loaded('redis')) {
             $this->cache = true;
-            $this->client = new Predis\Client();
+            $this->client = new Predis\Client([
+                'scheme' => 'tcp',
+                'host'   => $host,
+                'port'   => $port,
+            ]);
         } else {
             $this->cache = false;
         }
